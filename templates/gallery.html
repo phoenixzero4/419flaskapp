@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h2>Some of our current pups</h2>
+    {% for dog in info %}
+      <h3>{{dog.name}}</h3>
+       <div class="image-box">
+        <img src="static/images/{{dog.name}}">
+      </div>
+      <p>{{dog.name}} is a {{dog.age}} year old {{dog.sex}} {{dog.breed}}</p>
+     <a href="info/{{dog.name}}" <p>View more information about {{dog.name}} here</p> </a>
+     
+    {% endfor %}
+ 
+
+{% endblock %}
+
+

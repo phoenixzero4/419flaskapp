@@ -2,11 +2,7 @@ from flask import Flask, render_template, Markup, request, url_for, redirect, fl
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from data import info
-
-
 import sqlite3
-
-
 
 MyApp = Flask(__name__)
 MyApp.secret_key = 'leroybiggins'
@@ -38,7 +34,7 @@ def pics():
   
 
 class RegisterForm(Form):
-  username = StringField('Username',[validators.Length(min=5,max=100)])
+  username = StringField('Username',[validators.Length(min=1,max=100)])
   email = StringField('Email',[validators.Length(min=5,max=100)])
   password = PasswordField('Password',[validators.DataRequired(),validators.EqualTo('confirm',message='Passwords do not match')])
   confirm = PasswordField('Confirm Password')    
@@ -50,18 +46,20 @@ def register():
   if request.method == 'POST' and form.validate():
     username = form.username.data
     email = form.email.data
-    password = form.password.data
+    password = str(form.password.data)
   
     con = sqlite3.connect('test.db')
     cur = con.cursor()
-    cur.execute("INSERT INTO users(username,email,password) VALUES ('phoenix','phoenix@gmail.com','bishop');")
-    con.commit()
-    con.close()
-   
-    flash('Your account has been registered. You can now login','success')
-    redirect(url_for('login'))
-  
-    return render_template('register.html')
+    try:
+      cur.execute("INSERT INTO users VALUES (?,?,?)",(username,email,password))
+      con.commit()
+      con.close()
+      flash('Your account has been registered. You can now login','success')
+      redirect(url_for('login'))
+      return render_template('register.html',form=form)
+    except:
+      con.close()
+      flash('That username is already taken','error')
   return render_template('register.html',form=form)
 
               

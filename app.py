@@ -1,19 +1,23 @@
-from flask import Flask, render_template, Markup, request, url_for
+from flask import Flask, render_template, Markup, request, url_for, redirect, flash, session, logging, g
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from passlib.hash import sha256_crypt
 from data import info
-import random
+
+
+import sqlite3
+
+
 
 MyApp = Flask(__name__)
-
+MyApp.secret_key = 'leroybiggins'
 info = info()
-#url_for('style',filename='primary.css')
+
+
+MyApp.debug = True
 
 @MyApp.route('/login')
 def login():
-  return '<h1>Future login page</h1>'
-  
-@MyApp.route('/register')
-def register():
-  return '<h1>Future registration page</h1>'
+  return render_template('login.html')
   
 @MyApp.route('/')
 def home():
@@ -33,8 +37,34 @@ def pics():
   return render_template('gallery.html', info = info)
   
 
+class RegisterForm(Form):
+  username = StringField('Username',[validators.Length(min=5,max=100)])
+  email = StringField('Email',[validators.Length(min=5,max=100)])
+  password = PasswordField('Password',[validators.DataRequired(),validators.EqualTo('confirm',message='Passwords do not match')])
+  confirm = PasswordField('Confirm Password')    
+
+@MyApp.route('/register', methods= ['GET','POST'])
+def register():
+  import sqlite3
+  form = RegisterForm(request.form)
+  if request.method == 'POST' and form.validate():
+    username = form.username.data
+    email = form.email.data
+    password = form.password.data
+  
+    con = sqlite3.connect('test.db')
+    cur = con.cursor()
+    cur.execute("INSERT INTO users(username,email,password) VALUES ('phoenix','phoenix@gmail.com','bishop');")
+    con.commit()
+    con.close()
+   
+    flash('Your account has been registered. You can now login','success')
+    redirect(url_for('login'))
+  
+    return render_template('register.html')
+  return render_template('register.html',form=form)
 
               
 if __name__ == "__main__":
-        MyApp.run()
+  MyApp.run()
  

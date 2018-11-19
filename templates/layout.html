@@ -5,29 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style> 
-      body{
-         align-content:center;
-         } 
+     
+      
+      .flex-container, #contain{
+        display:flex;
+        
+        flex-direction:row;
+        flex-wrap:wrap;
+      }
+      h1{
+        align-self:center;
+        margin: 25px;
+        padding: 25px;
+        }
       .image-box{
-         max-width:50%;
-         align-content:center;
+        display:flex;
+        flex-direction:column;
+        width: 70%;
+        
+         align-items:center;
+        
+         margin:auto;
+         
          }
        img{
          max-width:50%; 
          max-height:50%;
          margin:auto;
+         float:left;
          }
        .help-inline{
          color:red;
          }
+       #out{ display:initial;}
+       .image-box > h3,img,.bio{
+         margin: 5px;
+         padding:5px;
+       }
+       
     </style>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Flask App</title>
 </head>
 <body>
    
         {% include 'includes/_nav.html' %}
-        <div class='container'>
+        {% block content %}{% endblock %}
+        <div class='flex-container'>
            {% include 'includes/_messages.html' %}
         {% block body %} {% endblock %}
         </div>

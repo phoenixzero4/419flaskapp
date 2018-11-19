@@ -1,3 +1,31 @@
 {% extends 'layout.html' %}
 
-{% block body %}<h1> This is the information page for {{ dog }} </h1> {% endblock %}
+{% block body %}<h1> This is the information page for {{ dogname }} </h1>
+
+
+<div id='contain'>
+    <div class='vitals'><h3>Vitals</h3>
+   <p>{{var.name}} is a {{var.age}} {{var.neutered}} {{var.sex}}</p>
+   <p>{{var.name}} is a {{var.color}} {{var.breed}} and approximately {{var.weight}}</p>
+</div>
+<div class='info'><h3>Information</h3>
+   <p>{{var.origin}}</p>
+   <p>{{var.likes}}</p>
+   <p>{{var.dislikes}}</p>
+   <h3>Additional Remarks</h3>
+   <p>{{var.remarks}}</p>
+</div>
+   <div id='picture1' class='image-box'>
+       <ul>
+      {% for i in var.pics %} 
+      <li> <img src="/static/{{i}}" class='infopic'></li>
+       {% endfor %}
+       </ul>
+   </div>
+    
+</div>
+
+
+
+{% endblock %}
+

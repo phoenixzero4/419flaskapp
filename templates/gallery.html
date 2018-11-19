@@ -1,15 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <h2>Some of our current pups</h2>
+  <h1>Some of our current pups</h1>
     {% for dog in info %}
-      <h3>{{dog.name}}</h3>
-       <div class="image-box">
-        <img src="static/images/{{dog.name}}">
-      </div>
-      <p>{{dog.name}} is a {{dog.age}} year old {{dog.sex}} {{dog.breed}}</p>
-     <a href="info/{{dog.name}}" <p>View more information about {{dog.name}} here</p> </a>
      
+       <div class="image-box">
+          <h3>{{dog.name}}</h3>
+        <img src="static/{{dog.name}}">
+      <div class='bio'>
+      <p>{{dog.name}} is a {{dog.age}} year old {{dog.sex}} {{dog.breed}}</p>
+     <a href="info/{{dog.name}}"> <p>View more information about {{dog.name}} here</p> </a>
+     
+     </div>
+     </div>
     {% endfor %}
  
 
